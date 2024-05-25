@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script defer src="script.js"></script>
 </head>
 <body>
     <h1>Socket IO Sample</h1>
-
-    <input id="inpMsg">
-    <button id="btnSend">Send</button>
-    <ul id="ulMsgList"></ul>
+    <div id="greeting"></div>
+    <div id="loginBox">
+        <input id="username">
+        <button id="btnStart">START</button>
+    </div>
+    <div id="chatBox">
+        <input id="inpToUser" placeholder="Send to (default everyone)">
+        <input id="inpNewMsg" placeholder="New Message">
+        <button id="btnSendMsg">SEND</button>
+        <ul id="Msgs"></ul>
+    </div>
 </body>
 </html>

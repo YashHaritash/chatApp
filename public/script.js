@@ -1,17 +1,32 @@
 let socket = io();
+let username;
 
-let btnSend = document.getElementById('btnSend');
-let inpMsg = document.getElementById('inpMsg');
-let ulMsgList = document.getElementById('ulMsgList');
+$('#loginBox').show();
+$('#chatBox').hide();
 
-btnSend.onclick = ()=>{
-    let msg = inpMsg.value
-    socket.emit('newMessage',{msg:msg});
-    inpMsg.value = '';
-}
+$('#btnStart').click(()=>{
+    socket.emit('login',{
+        username : $('#username').val()
+    })
+})
 
-socket.on('rnewMessage',(obj)=>{
-    let child = document.createElement('li');
-    child.innerText = `${obj.msg}`;
-    ulMsgList.appendChild(child);
+socket.on('logged_in',(data)=>{
+    username = data.username;
+    $('#loginBox').hide();
+    $('#chatBox').show();
+    $('#greeting').text(`Hello ${username}`);
+})
+
+$('#btnSendMsg').click(()=>{
+    socket.emit('msg_send',{
+        to : $('#inpToUser').val(),
+        msg : $('#inpNewMsg').val(),
+        me : username
+    })
+})
+
+socket.on('msg_rcvd',(data)=>{
+    let child = $('<li></li>');
+    child.text(`${data.msg} -from : ${data.from}`);
+    $('#chatBox').append(child);
 })

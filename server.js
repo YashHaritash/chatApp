@@ -9,8 +9,19 @@ const io = sockectio(server);
 app.use('/',express.static(__dirname+'/public'))
 io.on('connection',(socket)=>{
     console.log(socket.id)
-    socket.on('newMessage',(obj)=>{
-        io.emit('rnewMessage',obj);
+    socket.on('login',(data)=>{
+        socket.join(data.username);
+        socket.emit('logged_in',data);
+    })
+
+    socket.on('msg_send',(data)=>{
+        if(data.to==0){
+            socket.broadcast.emit('msg_rcvd',{msg:data.msg,from:data.me})
+        }
+        else{
+            io.to(data.to).emit('msg_rcvd',{msg:data.msg,from:data.me})
+        }
+        
     })
 })
 
